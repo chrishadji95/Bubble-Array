@@ -10,7 +10,7 @@ function setup() {
 }
 function draw() {
     background(20);
-this.xOff = this.xOff + 1;
+
   for (let i = 0; i<100; i++){
     bubbles[i].show();
     bubbles[i].move();
