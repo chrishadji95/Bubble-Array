@@ -1,0 +1,38 @@
+let bubbles = [];
+
+function setup() {
+  createCanvas(windowWidth, windowHeight);
+  for (let i = 0; i<100; i++){
+
+    bubbles[i] = new Bubble(random(width), random(height), random(5,50)); //creates new bubble at this x, y, and size
+    //parameters can be declared and assigned in for loop right above this or inside paranthesis
+  }
+}
+function draw() {
+    background(20);
+this.xOff = this.xOff + 1;
+  for (let i = 0; i<100; i++){
+    bubbles[i].show();
+    bubbles[i].move();
+
+  }
+}
+class Bubble {
+  constructor(x, y, r){
+  this.x = x;
+  this.y = y;
+  this.r = r;
+  this.xOff = random(-5, 5);
+  this.xOff = this.xOff + 1;
+  }
+ move(){
+    this.x = this.x*noise(this.xOff); // change last parameter to fix movement later
+    this.y = this.y*noise(this.xOff); // change last parameter to fix movement later
+}
+  show(){
+    strokeWeight(3);
+    stroke(233, 50, 20);
+    noFill(); //change fill to several colors of one color scheme
+    ellipse(this.x, this.y, this.r*2);
+  }
+}
