@@ -1,0 +1,95 @@
+let bubbles = [];
+let pop;
+function setup() {
+  pop = loadSound('bubble pop.mp3');
+  createCanvas(windowWidth-20, windowHeight-20); //-20 so that windows don't move when directional keys are pressed
+
+  for (let i = 0; i<60; i++){
+    bubbles[i] = new Bubble(random(width), random(height), random(3,70));
+    //  var d = dist(bubbles[i].x, bubbles[i].y);
+    }
+
+    blu = new Bubble(20, 20, 20);
+  }
+
+function draw() {
+  background(61, 14, 115);
+
+  blu.x = mouseX;
+  blu.y = mouseY;
+  if (millis() > 1000){
+  blu.show();
+}
+  blu.bluColor();
+
+  for (b of bubbles){
+    b.show();
+    b.move();
+
+    if(blu.intersects(b)){//checks for blu's intersection with any other bubble
+
+      if(blu.r > b.r && b.r > 1){//if blu's radius is greater than any other bubble's (and if theirs is > 1)
+        b.r = b.r - 0.4; //decreases size of touched bubble
+        blu.r = blu.r + 0.4; //increases size of blu
+      }
+      else if(b.r > blu.r){
+        blu.r = blu.r - 0.7; //decreases size of blu if touched by larger bubble
+      }
+    }
+    if(b.r < 2){ //changes color of caught bubble to same as background
+      b.changeColor();
+    }
+    if(blu.r < 2){ //changes color of caught bubble to same as background
+      blu.changeColor();
+    }
+    else if(b.r < 2.1 && b.r > 1){ //plays pop sound
+      pop.play();
+    }
+    if(blu.r < 2.1 && blu.r > 1){ //plays pop sound
+      pop.play();
+    }
+  }
+}
+class Bubble {
+  constructor(x, y, r){
+  this.x = x;
+  this.y = y;
+  this.r = r;
+  this.str = 3;
+  this.xOff = random(-.01, .01);
+  this.v = noise(this.x + this.xOff);   //variable for constantly updating x position
+  this.v2 = noise(this.y + this.xOff);  //variable for constantly updating y position
+  }
+
+  intersects(other){                    //function for intersection
+    let d = dist(this.x, this.y, other.x, other.y);
+    return (d < this.r + other.r);
+  }
+
+  move(){
+    this.x = this.x + this.v; //updating x position
+    this.y = this.y + this.v2; //updating y position
+    this.v = this.v + random(-.03, .03);
+    this.v2 = this.v2 + random(-.03, .03);
+  }
+  show(){
+
+    stroke(this.red, this.green, this.blue);
+    this.red = 210;
+    this.green = 50;
+    this.blue = 20;
+    noFill();
+    strokeWeight(this.str);
+    ellipse(this.x, this.y, this.r*2);
+  }
+  changeColor(){
+    this.red = 61;
+    this.green = 14;
+    this.blue = 115;
+  }
+  bluColor(){
+    this.red = 51;
+    this.green = 153;
+    this.blue = 255;
+  }
+}
